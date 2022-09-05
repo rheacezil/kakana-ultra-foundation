@@ -28,7 +28,7 @@ export default function NavBarLoggedIn() {
               </NavLink>
             </li>
             <li className="nav-item px-2 py-2">
-              <NavLink to="/" className="nav-link text-dark">
+              <NavLink to="/badge" className="nav-link text-dark">
                 My Badges
               </NavLink>
             </li>

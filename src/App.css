@@ -34,6 +34,7 @@
 
 #signup img {
     opacity: 95%;
+}
 
 /* <!-- ---- Navbar ---- --> */
 .navbar-brand img{
@@ -85,10 +86,10 @@
 .nav-item {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
 }
-/* <-------Volunteer Program-------> */
-#volunteer{
+#volunteer,#hero{
     padding-top: 105px;
 }
+/* <-------Volunteer Program-------> */
 .program-overlay {
     position: absolute;
     bottom: 0;
@@ -113,4 +114,40 @@
 .program-item img, .program-item .program-overlay {
     transition: all 0.4s ease;
 
+}
+/* Badges */
+
+.card:hover {
+    transform: scale(1.1);
+    transition: all 0.4s ease;
+}
+/* Current Fundraisers */
+#fundraisers {
+    background: url(../public/images/background-1.png) top/cover;
+}
+.progress {
+    border-radius: 0px;
+}
+.progress-bar {
+    text-align: end;
+    padding-right: 10px;
+}
+#fundraisers span {
+    top: 30px;
+    right: 30px;
+}
+
+/* Ultra Scholars */
+#scholars {
+    background-color:whitesmoke;
+}
+
+.carousel-item img {
+    border-top-right-radius: 20%;
+    border-bottom-left-radius: 20%;
+}
+
+#scholars h3 {
+    margin-left: 30%;
+    margin-right: 30%;
 }

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Hero() {
   return (
-    <div id="hero" className="vh-100">
+    <section id="hero" className="vh-100">
       <div className="container h-100 d-flex align-items-center justify-content-center">
         <div className="text-center active">
           <p className="text-white lead fw-light">Get involved now!</p>
@@ -21,6 +21,6 @@ export default function Hero() {
           </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

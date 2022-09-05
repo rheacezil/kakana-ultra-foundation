@@ -1,5 +1,16 @@
 import React from "react";
+import CurrentFund from "../CurrentFund";
+import Footer from "../Footer";
+import Hero from "../Hero";
+import Scholar from "../Scholar";
 
-export default function Home() {
-  return <div>Home</div>;
+export default function LandingPage() {
+  return (
+    <div>
+      <Hero />
+      <CurrentFund />
+      <Scholar />
+      <Footer />
+    </div>
+  );
 }
