@@ -19,3 +19,18 @@
     opacity: 85%;
 }
 
+
+#signup {
+    background-color:  rgb(255, 215, 107);
+}
+
+#signup .row {
+    flex-direction: row-reverse;
+    background-color: whitesmoke;
+    border-radius: 30px;
+    box-shadow: 12px 12px 25px rgb(179, 140, 13);
+}
+
+#signup img {
+    opacity: 95%;
+}

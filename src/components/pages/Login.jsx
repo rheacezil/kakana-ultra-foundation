@@ -8,7 +8,7 @@ export default function Login() {
   return (
     <>
       <div id="login" className="page-content d-flex align-items-center">
-        <Container className=" d-flex justify-content-center">
+        <Container className="d-flex justify-content-center">
           <div>
             <div className="row g-0">
               <div className="col-lg-6 d-none d-sm-block">
