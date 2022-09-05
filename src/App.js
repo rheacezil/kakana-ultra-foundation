@@ -10,7 +10,6 @@ function App() {
   return (
     <div className="App">
      <BrowserRouter>
-     {/* Navigation bar should be a ternary operator of whether or not a user is logged in. */}
      <NavigationBar />
      <Routes>
       <Route path='/' element={<LandingPage />} />
