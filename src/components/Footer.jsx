@@ -55,9 +55,9 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <a href="#" className="position-absolute start-0 end-0 p-5">
+          <Link to="#" className="position-absolute start-0 end-0 p-5">
             <i className="bi bi-arrow-up-circle text-warning h1"></i>
-          </a>
+          </Link>
         </div>
       </Container>
     </footer>

@@ -1,9 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
+import { Button, Form, Modal } from "react-bootstrap";
+import { bindActionCreators } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as registerAction from "../../../redux/actions/actionRegister"
 
 export default function Signup() {
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Redux
+  const { registerUser } = bindActionCreators(registerAction, useDispatch());
+  const userList = useSelector((state) => state.userList);
+
+  // Validation
+  const [invalidFirstName, setInvalidFirstName] = useState(false);
+  const [invalidLastName, setInvalidLastName] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const checkIfValid = () => {
+    let isValid = true;
+    userList.forEach((item) => {
+
+      // Check if firstname is valid
+      if (item.firstname === firstname) {
+        isValid = false;
+        setInvalidFirstName(true);
+      } else {
+        setInvalidFirstName(false);
+      }
+      // Check if lastname is valid
+      if (item.lastname === lastname) {
+        isValid = false;
+        setInvalidLastName(true);
+      } else {
+        setInvalidLastName(false);
+      }
+
+      // Check if email is valid
+      if (item.email === email) {
+        isValid = false;
+        setInvalidEmail(true);
+      } else {
+        setInvalidEmail(false);
+      }
+    });
+
+    // Check if password is same with confirmPassword
+    if (password !== confirmPassword) {
+      setInvalidPassword(true);
+      isValid = false;
+    } else {
+      setInvalidPassword(false);
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (checkIfValid()) {
+      registerUser({ firstname, lastname, email, password });
+      setShowModal(true);
+    }
+  };
+
+  const closeRegistration = () => {
+    setShowModal(false);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
+
   return (
     <div id="signup" className="page-content d-flex align-items-center">
       <div className="container d-flex justify-content-center">
@@ -26,46 +104,105 @@ export default function Signup() {
             </span>
 
             <p className="lead">Be one of us!</p>
-            <form>
+            <Form onSubmit={handleSubmit}>
               <div className="form-row d-flex row-reverse pb-1">
-                <div className="col-lg-5">
-                  <input
+                <Form.Group className="mb-3" controlId="formFirstName">
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
                     type="text"
-                    className="form-control"
-                    placeholder="First Name"
-                  />
-                </div>
-                <div className="col-lg-5 px-1">
-                  <input
+                    size="sm"
+                    placeholder="Enter Your First Name"
+                    value={firstname}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    autoComplete="firstname"
+                    isInvalid={invalidFirstName}
+                  ></Form.Control>
+                  <Form.Control.Feedback type="invalid">
+                    First Name already exist.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formLastName">
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
                     type="text"
-                    className="form-control"
-                    placeholder="Last Name"
-                  />
-                </div>
+                    size="sm"
+                    placeholder="Enter Your Last Name"
+                    value={lastname}
+                    onChange={(e) => setLastName(e.target.value)}
+                    autoComplete="name"
+                    isInvalid={invalidLastName}
+                  ></Form.Control>
+                  <Form.Control.Feedback type="invalid">
+                    Last Name already exist.
+                  </Form.Control.Feedback>
+                </Form.Group>
               </div>
+              <Form.Group className="mb-3" controlId="su-formEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  size="sm"
+                  placeholder="Enter Your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  isInvalid={invalidEmail}
+                  autoComplete="email"
+                ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  email already exist.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="su-formPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  size="sm"
+                  placeholder="Enter Your Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="new-password"
+                  isInvalid={invalidPassword}
+                ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  The password confirmation does not match
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formConfirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  size="sm"
+                  placeholder="Re-Enter Your Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  autoComplete="new-password"
+                  isInvalid={invalidPassword}
+                ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  The password confirmation does not match
+                </Form.Control.Feedback>
+              </Form.Group>
               <div className="form-row">
                 <div className="col-lg-10">
-                  <input
-                    type="email"
-                    className="form-control my-3"
-                    placeholder="Email Address"
-                  />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="col-lg-10">
-                  <input
-                    type="password"
-                    className="form-control my-3"
-                    placeholder="Password"
-                  />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="col-lg-10">
-                  <Link to="/login" className="btn btn-warning w-100">
+
+
+                  <Modal show={showModal}>
+                    <Modal.Header>
+                      <Modal.Title className="text-dark">Congratulation!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-dark">
+                      Successful Registration!
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={() => closeRegistration()}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
+                  <Button variant="info" type="submit" className="btn btn-warning w-100">
                     Register
-                  </Link>
+                  </Button>
                   <hr />
                 </div>
               </div>
@@ -92,7 +229,8 @@ export default function Signup() {
                   Login.
                 </Link>
               </p>
-            </form>
+
+            </Form>
           </div>
         </div>
       </div>

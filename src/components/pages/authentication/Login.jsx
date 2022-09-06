@@ -1,10 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import * as actionLogin from "../../../redux/actions/actionLogin";
+import { bindActionCreators } from "redux";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const userList = useSelector((state) => state.userList);
+  const { loginUser } = bindActionCreators(actionLogin, useDispatch());
+
+  // Validation
+  const [invalidUser, setInvalidUser] = useState(false);
+
+  const checkIfValid = () => {
+    let isValid = false;
+
+    // Check if user exist
+    userList.forEach((user) => {
+      if (user.email === email && user.password === password) {
+        setInvalidUser(false);
+        isValid = true;
+        console.log("Successful Login");
+      } else {
+        console.log("Failed Login");
+        setInvalidUser(true);
+      }
+    });
+
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (checkIfValid()) {
+      loginUser({ email, password });
+    }
+  };
+
+
+
   return (
     <div id="login" className="page-content d-flex align-items-center">
       <Container className="d-flex justify-content-center">
@@ -28,34 +66,43 @@ export default function Login() {
               </span>
 
               <p className="lead">Sign in to your account</p>
-              <form>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-4" controlId="formEmail">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    size="sm"
+                    placeholder="Enter Your Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    isInvalid={invalidUser}
+                  ></Form.Control>
+                  <Form.Control.Feedback type="invalid">
+                    Invalid User
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-4" controlId="formPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    size="sm"
+                    placeholder="Enter Your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    isInvalid={invalidUser}
+                  ></Form.Control>
+                  <Form.Control.Feedback type="invalid">
+                    Invalid User
+                  </Form.Control.Feedback>
+                </Form.Group>
                 <div className="form-row">
                   <div className="col-lg-10">
-                    <input
-                      type="email"
-                      className="form-control my-3"
-                      placeholder="Email Address"
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col-lg-10">
-                    <input
-                      type="password"
-                      className="form-control my-3"
-                      placeholder="Password"
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col-lg-10">
-                    <Link to="/home" className="btn btn-warning w-100">
+                    <Button variant="primary" type="submit" className="btn btn-warning w-100">
                       Login
-                    </Link>
+                    </Button>
                     <hr />
                   </div>
                 </div>
-
                 <div className="form-row">
                   <div className="col-lg-10">
                     <button className="btn btn-outline-warning text-dark w-100 mb-3">
@@ -80,7 +127,7 @@ export default function Login() {
                     Register here.
                   </Link>
                 </p>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
