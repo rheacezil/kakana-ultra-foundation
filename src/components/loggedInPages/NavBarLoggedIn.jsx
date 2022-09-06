@@ -23,7 +23,7 @@ export default function NavBarLoggedIn() {
         <Navbar.Collapse>
           <ul className="navbar-nav ms-auto text-center">
             <li className="nav-item px-2 py-2">
-              <NavLink to="/" className="nav-link text-dark">
+              <NavLink to="/home" className="nav-link text-dark">
                 Dashboard
               </NavLink>
             </li>

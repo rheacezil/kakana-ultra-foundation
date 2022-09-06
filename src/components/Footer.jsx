@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -7,12 +8,9 @@ export default function Footer() {
       <Container>
         <div className="row text-white g-4">
           <div className="col-md-6 col-lg-4 px-5">
-            <a
-              href="index.html"
-              className="brand text-decoration-none text-white"
-            >
+            <Link to="/" className="brand text-decoration-none text-white">
               Ultra Foundation
-            </a>
+            </Link>
             <p className="text-white mt-3 text-muted">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut ea
               error consectetur illum? Sint voluptatibus quae, sed et

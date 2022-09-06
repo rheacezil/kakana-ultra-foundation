@@ -38,37 +38,6 @@
 
 /* <!-- ---- Navbar ---- --> */
 .navbar-brand img{
-  width: 40px;
-}
-#brand-name{
-  font-family: var(--sm-font);
-}
-.navbar {
- box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
- opacity: 90%;
-}
-
-.nav-link:hover{
-  color: white !important;
-}
-
-.nav-item {
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
-}
-
-/* Hero */
-#hero {
-  background: url(../public/images/hero-cover.png) top/cover;
-  box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.664);
-  
-}
-
-#hero h1 {
-  font-family: var(--lg-font);
-  font-weight: 400 !important;
-}
-
-.navbar-brand img{
     width: 40px;
 }
 #brand-name{
@@ -86,41 +55,36 @@
 .nav-item {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
 }
-#volunteer,#hero{
-    padding-top: 105px;
-}
-/* <-------Volunteer Program-------> */
-.program-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(255, 215, 107, 0.9);
-    display: flex;
-    align-items: flex-end;
-    padding: 30px;
-    opacity: 0;
+
+
+
+/* Hero */
+#hero {
+    background: url(../public/images/hero-cover.png) top/cover;
+    box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.664);
+    
 }
 
-.program-item:hover .program-overlay {
-    opacity: 1;
+#hero h1 {
+    font-family: var(--lg-font);
+    font-weight: 400 !important;
 }
 
-.program-item:hover img {
-    transform: scale(1.1);
+/* Promo */
+#promo {
+    margin-top: -200px;
+    min-height: 360px;
+}
+.promo-wrap {
+    z-index: 99;
 }
 
-.program-item img, .program-item .program-overlay {
-    transition: all 0.4s ease;
-
+#promo .row {
+    background-color: #fff;
+    box-shadow: 0px 16px 28px 0px rgb(0 0 0 / 15%);
 }
-/* Badges */
 
-.card:hover {
-    transform: scale(1.1);
-    transition: all 0.4s ease;
-}
+
 /* Current Fundraisers */
 #fundraisers {
     background: url(../public/images/background-1.png) top/cover;
@@ -150,4 +114,63 @@
 #scholars h3 {
     margin-left: 30%;
     margin-right: 30%;
+}
+
+
+
+/* Newsletter  */
+#newsletter {
+    background-color: whitesmoke;
+}
+#newsletter .input-group {
+    max-width: 500px;
+}
+
+#newsletter .form-control {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+
+
+/* Footer */
+footer .brand {
+    font-family: var(--lg-font);
+    letter-spacing: 2px;;
+
+}
+
+@media(min-width: 992px) {
+    .nav-item{
+        border-bottom: none;
+    }
+
+    /* Promo */
+    #promo .container {
+        max-width: 960px;
+    }
+}
+
+@media(max-width: 991px) {
+    /* Fundraisers */
+    #fundraisers {
+        margin-top: 100px;
+    }
+}
+@media(max-width: 768px) {
+    /* Fundraisers */
+    #fundraisers {
+        margin-top: 400px;
+    }
+
+    #scholars h3 {
+        margin: auto;
+    }
+
+ }
+@media(max-width: 576px) {
+    /* Fundraisers */
+    #fundraisers {
+        margin-top: 590px;
+    }
 }

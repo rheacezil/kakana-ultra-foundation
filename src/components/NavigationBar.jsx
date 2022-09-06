@@ -49,5 +49,4 @@ export default function NavigationBar() {
       </Container>
     </Navbar>
   );
-  return <div>NavBar</div>;
 }
