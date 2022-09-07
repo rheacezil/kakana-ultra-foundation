@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./auth.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
@@ -6,6 +7,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import * as actionLogin from "../../../redux/actions/actionLogin";
 import { bindActionCreators } from "redux";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
