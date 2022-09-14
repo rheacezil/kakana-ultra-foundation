@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import { db } from "../../firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
+import ReactPaginate from "react-paginate";
+import DataTable from "../DataTable";
+import { useLocation } from "react-router-dom";
 
 export default function Donate() {
   const [input, setInput] = useState(null);
@@ -14,8 +17,10 @@ export default function Donate() {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  const [userList] = useCollection(db.collection("users"));
+  const [query, setQuery] = useState("");
+  const [userList] = useCollection(
+    db.collection("users").orderBy("timestamp", "desc")
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +51,7 @@ export default function Donate() {
       <div className="donate-bg">
         <div className="d-flex justify-content-center align-items-center">
           <div className="row w-100">
-            <div className="col-md">
+            <div className="col-md donate-form">
               <Form className="bg-light p-5 m-5" onSubmit={handleSubmit}>
                 <div className="py-3">
                   <h2 className="mb-5">SAVE A LIFE: DONATE TODAY</h2>
@@ -177,53 +182,40 @@ export default function Donate() {
                     <img
                       src="https://serious-studio.com/wp-content/uploads/01-1.png"
                       className="img-fluid w-25 h-25 btn"
+                      alt="gcash"
                     />
 
                     <img
                       src="https://www.theorchardcottage.co.nz/wp-content/uploads/2018/09/visa-and-mastercard-logos-logo-visa-png-logo-visa-mastercard-png-visa-logo-white-png-awesome-logos.png"
                       className="img-fluid w-25 h-25 btn"
+                      alt="visa"
                     />
                     <img
                       src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg"
                       className="img-fluid w-25 h-25 btn"
+                      alt="pay"
                     />
                   </div>
                 </div>
               </Form>
             </div>
-            <div className="col-md d-flex align-items-center justify-content-center">
-              <div class="card h-50 w-100">
+            <div className="col-md ">
+              <div class="card h-50 w-100 donate">
                 <div class="card-header list-group-item list-group-item-primary">
                   Featured
                 </div>
                 <div class="card-body bg-warning">
                   {userList?.docs.map((user) => (
-                    <ul className="list-group p-3 mx-3">
-                      <li className="list-group-item list-group-item-primary">
-                        <span>Donate : </span>
-                        {user.data().input}
-                      </li>
-                      <li className="list-group-item list-group-item-primary">
-                        <span>First name : </span>
-                        {user.data().firstName}
-                      </li>
-                      <li className="list-group-item list-group-item-primary">
-                        <span>Last name : </span>
-                        {user.data().lastName}
-                      </li>
-                      <li className="list-group-item list-group-item-primary">
-                        <span>Email : </span>
-                        {user.data().email}
-                      </li>
-                      <li className="list-group-item list-group-item-primary">
-                        <span>Complete Address : </span>
-                        {user.data().address}
-                      </li>
-                      <li className="list-group-item list-group-item-primary">
-                        <span>Phone number : </span>
-                        {user.data().phoneNumber}
-                      </li>
-                    </ul>
+                    <DataTable
+                      key={user.id}
+                      input={user.data().input}
+                      firstName={user.data().firstName}
+                      lastName={user.data().lastName}
+                      email={user.data().email}
+                      address={user.data().address}
+                      phoneNumber={user.data().phoneNumber}
+                      timestamp={user.data().timestamp}
+                    />
                   ))}
                 </div>
               </div>
