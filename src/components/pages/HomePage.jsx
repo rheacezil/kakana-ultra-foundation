@@ -1,16 +1,15 @@
 import React from "react";
-import NavBarLoggedIn from "../NavBarLoggedIn";
-import Footer from "../../Footer";
+import Footer from "../Footer";
 import Badge from "../Badge";
 import VolunteerProg from "../VolunteerProg";
+import NavigationBar from "../NavigationBar";
 
 export default function HomePage() {
   return (
     <React.Fragment>
-      <NavBarLoggedIn />
+      <NavigationBar />
       <VolunteerProg />
       <Badge />
-      <Footer />
     </React.Fragment>
   );
 }

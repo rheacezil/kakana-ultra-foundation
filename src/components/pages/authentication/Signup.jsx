@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
 import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import * as registerAction from "../../../redux/actions/actionRegister"
+import * as registerAction from "../../../redux/actions/actionRegister";
 
 export default function Signup() {
   const [firstname, setFirstName] = useState("");
@@ -28,7 +28,6 @@ export default function Signup() {
   const checkIfValid = () => {
     let isValid = true;
     userList.forEach((item) => {
-
       // Check if firstname is valid
       if (item.firstname === firstname) {
         isValid = false;
@@ -80,7 +79,6 @@ export default function Signup() {
     setPassword("");
     setConfirmPassword("");
   };
-
 
   return (
     <div id="signup" className="page-content d-flex align-items-center">
@@ -184,23 +182,30 @@ export default function Signup() {
               </Form.Group>
               <div className="form-row">
                 <div className="col-lg-10">
-
-
                   <Modal show={showModal}>
                     <Modal.Header>
-                      <Modal.Title className="text-dark">Congratulation!</Modal.Title>
+                      <Modal.Title className="text-dark">
+                        Congratulation!
+                      </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="text-dark">
                       Successful Registration!
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={() => closeRegistration()}>
+                      <Button
+                        variant="secondary"
+                        onClick={() => closeRegistration()}
+                      >
                         Close
                       </Button>
                     </Modal.Footer>
                   </Modal>
 
-                  <Button variant="info" type="submit" className="btn btn-warning w-100">
+                  <Button
+                    variant="info"
+                    type="submit"
+                    className="btn btn-warning w-100"
+                  >
                     Register
                   </Button>
                   <hr />
@@ -229,7 +234,6 @@ export default function Signup() {
                   Login.
                 </Link>
               </p>
-
             </Form>
           </div>
         </div>

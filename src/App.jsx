@@ -1,28 +1,25 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import styled from "styled-components";
 
-import HomePage from './components/loggedInPages/pages/HomePage';
-import Login from './components/pages/authentication/Login';
-import SignUp from './components/pages/authentication/Signup'
-import LandingPage from './components/pages/LandingPage';
-import { useSelector } from 'react-redux';
-
+import SignUp from "./components/pages/authentication/Signup";
+import LandingPage from "./components/pages/LandingPage";
+import HomePage from "./components/pages/HomePage";
+import Login from "./components/pages/authentication/Login";
+import Donate from "./components/pages/Donate";
 
 function App() {
-  const activeUser = useSelector((state) => state.activeUser)
-
-
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/signup' element={<SignUp />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/landingpage" element={<HomePage />} />
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
-        {activeUser.email ? (<HomePage />) : (<Login />)}
       </BrowserRouter>
-
     </div>
   );
 }

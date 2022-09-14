@@ -29,13 +29,13 @@ export default function NavigationBar() {
             </li>
 
             <li className="nav-item px-2 py-2">
-              <NavLink to="/" className="nav-link text-dark">
+              <NavLink to="/landingpage" className="nav-link text-dark">
                 MISSION
               </NavLink>
             </li>
 
             <li className="nav-item px-2 py-2">
-              <NavLink to="/" className="nav-link text-dark">
+              <NavLink to="/donate" className="nav-link text-dark">
                 CONTACT US
               </NavLink>
             </li>
