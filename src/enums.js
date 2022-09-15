@@ -52,58 +52,93 @@ export const badges =[
     {
     id:1,
     title:"EDUCATE",
-    image:"badge-1.png"
+    image:"images/badge-1.png",
+    filter:""
 },
 {
     id:2,
     title:"GENEROSITY",
-    image:"badge-2.png"
+    image:"images/badge-2.png",
+    filter:""
 },
 {
     id:3,
     title:"VOLUNTEERISM",
-    image:"badge-3.png"
+    image:"images/badge-3.png",
+    filter:""
 },
 {
     id:4,
     title:"GIVE LOVE",
-    image:"badge-4.png"
+    image:"images/badge-4.png",
+    filter:""
 },
 {
     id:5,
     title:"NUTRITION",
-    image:"badge-5.png"
+    image:"images/badge-5.png",
+    filter:""
 },
 {
     id:6,
     title:"COMMUNITY",
-    image:"badge-6.png"
+    image:"images/bagde-6.png",
+    filter:""
 },
 {
     id:7,
     title:"ECO-FRIEND",
-    image:"badge-7.png"
+    image:"images/badge-7.png"
 },
 {
     id:8,
     title:"DONATE BLOOD",
-    image:"badge-8.png"
+    image:"images/badge-8.png",
+    filter:"BEST"
 },
 {
     id:9,
     title:"CLEAN-UP",
-    image:"badge-9.png"
+    image:"images/badge-9.png",
+    filter:"BEST"
 },
 {
     id:10,
     title:"PAW-MATE",
-    image:"badge-10.png"
+    image:"images/badge-10.png",
+    filter:"BEST"
 },
 {
     id:11,
     title:"HOME BUILDER",
-    image:"badge-11.png"
+    image:"images/badge-11.png",
+    filter:"BEST"
 },
 ]
 
+export const fundraisers = [{
+    id:1,
+    title:"Project Ngiti",
+    image:"images/fundraiser-1.png",
+    body:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam quo fugit quia mollitia debitis nesciunt facere totam esse perferendis accusantium illum dolore quaerat, maxime unde.",
+    goal:"₱ 50,000",
+    raised:" ₱ 30,000"
+},
+{
+    id:2,
+    title:"Project Aral",
+    image:"images/fundraiser-2.png",
+    body:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam quo fugit quia mollitia debitis nesciunt facere totam esse perferendis accusantium illum dolore quaerat, maxime unde.",
+    goal:" ₱ 35,000",
+    raised:"₱ 26,250"
+},
+{
+    id:3,
+    title:"Project Aral",
+    image:"images/fundraiser-3.png",
+    body:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam quo fugit quia mollitia debitis nesciunt facere totam esse perferendis accusantium illum dolore quaerat, maxime unde.",
+    goal:" ₱ 25,000",
+    raised:"₱ 22,500"
+}
+]
     

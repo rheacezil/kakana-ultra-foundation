@@ -5,9 +5,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import { db } from "../../firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
-import ReactPaginate from "react-paginate";
 import DataTable from "../DataTable";
-import { useLocation } from "react-router-dom";
 
 export default function Donate() {
   const [input, setInput] = useState(null);
