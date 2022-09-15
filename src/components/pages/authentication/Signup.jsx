@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
-import { bindActionCreators } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-import * as registerAction from "../../../redux/actions/actionRegister";
+import { useSelector } from "react-redux";
+import firebase from "firebase/compat/app";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { auth, db } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Signup() {
   const [firstname, setFirstName] = useState("");
@@ -14,9 +16,10 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [userLists] = useCollection(db.collection("loginUsers"));
+  const [user] = useAuthState(auth);
   // Redux
-  const { registerUser } = bindActionCreators(registerAction, useDispatch());
-  const userList = useSelector((state) => state.userList);
+  const activeUser = useSelector((state) => state.activeUser);
 
   // Validation
   const [invalidFirstName, setInvalidFirstName] = useState(false);
@@ -27,24 +30,17 @@ export default function Signup() {
 
   const checkIfValid = () => {
     let isValid = true;
-    userList.forEach((item) => {
-      // Check if firstname is valid
-      if (item.firstname === firstname) {
+    userLists?.docs.forEach((doc) => {
+      // Check if username is valid
+      if (doc.data().firstname === firstname || !firstname) {
         isValid = false;
         setInvalidFirstName(true);
       } else {
         setInvalidFirstName(false);
       }
-      // Check if lastname is valid
-      if (item.lastname === lastname) {
-        isValid = false;
-        setInvalidLastName(true);
-      } else {
-        setInvalidLastName(false);
-      }
 
       // Check if email is valid
-      if (item.email === email) {
+      if (doc.data().email === email || !email) {
         isValid = false;
         setInvalidEmail(true);
       } else {
@@ -53,7 +49,7 @@ export default function Signup() {
     });
 
     // Check if password is same with confirmPassword
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword || !password) {
       setInvalidPassword(true);
       isValid = false;
     } else {
@@ -65,12 +61,17 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (checkIfValid()) {
-      registerUser({ firstname, lastname, email, password });
+      db.collection("loginUsers").add({
+        firstname: firstname,
+        email: email,
+        password: password,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
       setShowModal(true);
     }
   };
-
   const closeRegistration = () => {
     setShowModal(false);
     setFirstName("");
@@ -79,7 +80,6 @@ export default function Signup() {
     setPassword("");
     setConfirmPassword("");
   };
-
   return (
     <div id="signup" className="page-content d-flex align-items-center">
       <div className="container d-flex justify-content-center">

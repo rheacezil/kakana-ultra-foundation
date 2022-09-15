@@ -7,11 +7,13 @@ import LandingPage from "./components/pages/LandingPage";
 import HomePage from "./components/pages/HomePage";
 import Login from "./components/pages/authentication/Login";
 import Donate from "./components/pages/Donate";
+import NavigationBar from "./components/NavigationBar";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <NavigationBar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/landingpage" element={<HomePage />} />
