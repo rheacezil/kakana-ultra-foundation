@@ -36,7 +36,7 @@ export default function NavigationBar() {
 
             <li className="nav-item px-2 py-2">
               <NavLink to="/donate" className="nav-link text-dark">
-                CONTACT US
+                JOIN US
               </NavLink>
             </li>
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { fundraisers } from "../enums";
 import { renderLoading } from "../loaders";
 
@@ -16,7 +17,9 @@ export default function Fundaraisers() {
       <div className="col-md-6 col-lg-4 card position-relative border-0 my-3">
         <img src={item.image} className="pt-3" alt={item.title} />
         <span className="position-absolute d-flex align-items-center justify-content-center text-primary fs-4">
-          <button className="btn btn-warning">Donate Now</button>
+          <Link to="/donate" className="btn btn-warning">
+            Donate Now
+          </Link>
         </span>
         <div className="progress">
           <div
@@ -43,9 +46,9 @@ export default function Fundaraisers() {
               {item.raised}
             </div>
           </div>
-          <a href="#" className="btn btn-outline-dark">
+          <Link to="/" className="btn btn-outline-dark">
             Read more
-          </a>
+          </Link>
         </div>
       </div>
     ));

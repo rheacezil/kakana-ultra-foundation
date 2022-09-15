@@ -8,6 +8,9 @@ import HomePage from "./components/pages/HomePage";
 import Login from "./components/pages/authentication/Login";
 import Donate from "./components/pages/Donate";
 import NavigationBar from "./components/NavigationBar";
+import Show from "./components/DataTable";
+import Create from "./components/pages/Donate";
+import Edit from "./components/EditData";
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
           <Route path="/donate" element={<Donate />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/show" element={<Show />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/edit/:id" element={<Edit />} />
         </Routes>
       </BrowserRouter>
     </div>
