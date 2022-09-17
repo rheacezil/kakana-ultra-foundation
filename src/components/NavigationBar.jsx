@@ -1,8 +1,20 @@
-import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOut, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
 import { Container, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 
 export default function NavigationBar() {
+  const [email, setEmail] = useState("")
+  const navigate = useNavigate();
+
+  const logout = (e) => {
+    e.preventDefault();
+    auth.signOut();
+
+    navigate("/login");
+  };
   return (
     <Navbar bg="warning" expand="lg" variant="light" className="py-3 fixed-top">
       <Container>
@@ -15,6 +27,33 @@ export default function NavigationBar() {
             ULTRA Foundation
           </span>
         </NavLink>
+
+        <div className="nav-btns order-lg-2">
+          {email ? (
+            <>
+              <NavLink
+                to="/login"
+                className="btn position-relative"
+                type="button"
+                onClick={logout}
+              >
+                <FontAwesomeIcon icon={faSignOut} />
+                <span className="nav-btn-label"> LOGOUT </span>
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className="btn position-relative"
+                type="button"
+              >
+                <FontAwesomeIcon icon={faSignIn} />
+                <span className="nav-btn-label"> LOGIN</span>
+              </NavLink>
+            </>
+          )}
+        </div>
 
         <Navbar.Toggle>
           <span className="navbar-toggler-icon"></span>

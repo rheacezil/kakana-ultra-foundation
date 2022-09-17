@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { Button, Form } from "react-bootstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useSelector } from "react-redux";
+import NavHome from "../NavHome";
+import NavLanding from "../NavLanding";
 
-const Create = () => {
+const Donate = () => {
   const [input, setInput] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,6 +18,20 @@ const Create = () => {
   const navigate = useNavigate();
 
   const dataCollection = collection(db, "users");
+
+  const [user] = useAuthState(auth);
+  const activeUser = useSelector((state) => state.activeUser);
+
+  const checkIfActive = () => {
+    let isActive = false;
+    if (user || activeUser.email) {
+      isActive = true;
+    } else {
+      console.log("no user active");
+    }
+
+    return isActive;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +49,7 @@ const Create = () => {
 
   return (
     <div className="donate-bg">
+      {checkIfActive() ? <NavHome /> : <NavLanding />}
       <div className="d-flex justify-content-center align-items-center">
         <div className="row w-100">
           <div className="col-md donate-form">
@@ -158,4 +177,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Donate;

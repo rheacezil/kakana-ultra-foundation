@@ -1,28 +1,3 @@
-
-
-
-/* <!-- ---- Navbar ---- --> */
-.navbar-brand img{
-    width: 40px;
-}
-#brand-name{
-    font-family: var(--sm-font);
-}
-.navbar {
-   box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
-   opacity: 90%;
-}
-
-.nav-link:hover{
-    color: white !important;
-}
-
-.nav-item {
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
-}
-
-
-
 /* Hero */
 #hero {
     background: url(../public/images/hero-cover.png) top/cover;
@@ -48,9 +23,6 @@
     background-color: #fff;
     box-shadow: 0px 16px 28px 0px rgb(0 0 0 / 15%);
 }
-#volunteer{
-    margin-top: 90px;
-}
 
 /* Current Fundraisers */
 #fundraisers {
@@ -68,23 +40,6 @@
     right: 30px;
 }
 
-/* Ultra Scholars */
-#scholars {
-    background-color:whitesmoke;
-}
-
-.carousel-item img {
-    border-top-right-radius: 20%;
-    border-bottom-left-radius: 20%;
-}
-
-#scholars h3 {
-    margin-left: 30%;
-    margin-right: 30%;
-}
-
-
-
 /* Newsletter  */
 #newsletter {
     background-color: whitesmoke;
@@ -98,51 +53,47 @@
     border-bottom-left-radius: 25px;
 }
 
-
-
-/* Footer */
-footer .brand {
-    font-family: var(--lg-font);
-    letter-spacing: 2px;;
-
+/* ------- HOMEPAGE ------- */
+/* Volunteer Programs */
+.program-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 215, 107, 0.9);
+    display: flex;
+    align-items: flex-end;
+    padding: 30px;
+    opacity: 0;
 }
 
-@media(min-width: 992px) {
-    .nav-item{
-        border-bottom: none;
-    }
-
-    /* Promo */
-    #promo .container {
-        max-width: 960px;
-    }
+.program-item:hover .program-overlay {
+    opacity: 1;
 }
 
-@media(max-width: 991px) {
-    /* Fundraisers */
-    #fundraisers {
-        margin-top: 100px;
-    }
+.program-item:hover img {
+    transform: scale(1.1);
 }
-@media(max-width: 768px) {
-    /* Fundraisers */
-    #fundraisers {
-        margin-top: 400px;
-    }
 
-    #scholars h3 {
-        margin: auto;
-    }
-
- }
-@media(max-width: 576px) {
-    /* Fundraisers */
-    #fundraisers {
-        margin-top: 590px;
-    }
+.program-item img, .program-item .program-overlay {
+    transition: all 0.4s ease;
 }
+
+/* Badges */
+#badges {
+    background: url(../public/images/background-1.png) top/cover;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    transition: all 0.4s ease;
+}
+
+/* Donate Page */
 .donate-bg{
     background-image: url(../public/images/hero-cover.png);
+    box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.300);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -157,5 +108,5 @@ footer .brand {
     
 }
 .donate-form{
-    margin-top: 50px;
+    margin-top: 104px;
 }

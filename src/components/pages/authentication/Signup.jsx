@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as actionRegister from "../../../redux/actions/actionRegister";
+import { db } from "../../../firebase";
 import firebase from "firebase/compat/app";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { auth, db } from "../../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { db } from "../../../firebase";
 
 export default function Signup() {
   const [firstname, setFirstName] = useState("");
@@ -16,31 +17,37 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [userLists] = useCollection(db.collection("loginUsers"));
-  const [user] = useAuthState(auth);
   // Redux
-  const activeUser = useSelector((state) => state.activeUser);
+  const { registerUser } = bindActionCreators(actionRegister, useDispatch());
+  const userLists = useSelector((state) => state.userLists);
 
   // Validation
-  const [invalidFirstName, setInvalidFirstName] = useState(false);
-  const [invalidLastName, setInvalidLastName] = useState(false);
+  // const [invalidFirstName, setInvalidFirstName] = useState(false);
+  // const [invalidLastName, setInvalidLastName] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const checkIfValid = () => {
     let isValid = true;
-    userLists?.docs.forEach((doc) => {
-      // Check if username is valid
-      if (doc.data().firstname === firstname || !firstname) {
-        isValid = false;
-        setInvalidFirstName(true);
-      } else {
-        setInvalidFirstName(false);
-      }
+    userLists.forEach((item) => {
+      // // // Check if firstname is valid
+      // if (item.firstname === firstname) {
+      //   isValid = false;
+      //   setInvalidFirstName(true);
+      // } else {
+      //   setInvalidFirstName(false);
+      // }
+      // //  // Check if lastname is valid
+      // if (item.lastname === lastname) {
+      //   isValid = false;
+      //   setInvalidLastName(true);
+      // } else {
+      //   setInvalidLastName(false);
+      // }
 
       // Check if email is valid
-      if (doc.data().email === email || !email) {
+      if (item.email === email) {
         isValid = false;
         setInvalidEmail(true);
       } else {
@@ -49,7 +56,7 @@ export default function Signup() {
     });
 
     // Check if password is same with confirmPassword
-    if (password !== confirmPassword || !password) {
+    if (password !== confirmPassword) {
       setInvalidPassword(true);
       isValid = false;
     } else {
@@ -63,15 +70,18 @@ export default function Signup() {
     e.preventDefault();
 
     if (checkIfValid()) {
-      db.collection("loginUsers").add({
+      registerUser({ firstname, lastname, email, password });
+      db.collection("users").add({
         firstname: firstname,
         email: email,
         password: password,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
+
       setShowModal(true);
     }
   };
+
   const closeRegistration = () => {
     setShowModal(false);
     setFirstName("");
@@ -80,6 +90,7 @@ export default function Signup() {
     setPassword("");
     setConfirmPassword("");
   };
+
   return (
     <div id="signup" className="page-content d-flex align-items-center">
       <div className="container d-flex justify-content-center">
@@ -107,37 +118,40 @@ export default function Signup() {
                 <Form.Group className="mb-3" controlId="formFirstName">
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
+                    className="p-2"
                     type="text"
                     size="sm"
-                    placeholder="Enter Your First Name"
+                    placeholder="First Name"
                     value={firstname}
                     onChange={(e) => setFirstName(e.target.value)}
                     autoComplete="firstname"
-                    isInvalid={invalidFirstName}
+                  // isInvalid={invalidFirstName}
                   ></Form.Control>
-                  <Form.Control.Feedback type="invalid">
+                  {/* <Form.Control.Feedback type="invalid">
                     First Name already exist.
-                  </Form.Control.Feedback>
+                  </Form.Control.Feedback> */}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formLastName">
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
+                    className="p-2 mx-1"
                     type="text"
                     size="sm"
-                    placeholder="Enter Your Last Name"
+                    placeholder="Last Name"
                     value={lastname}
                     onChange={(e) => setLastName(e.target.value)}
                     autoComplete="name"
-                    isInvalid={invalidLastName}
+                  // isInvalid={invalidLastName}
                   ></Form.Control>
-                  <Form.Control.Feedback type="invalid">
+                  {/* <Form.Control.Feedback type="invalid">
                     Last Name already exist.
-                  </Form.Control.Feedback>
+                  </Form.Control.Feedback> */}
                 </Form.Group>
               </div>
               <Form.Group className="mb-3" controlId="su-formEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
+                  className="p-2"
                   type="email"
                   size="sm"
                   placeholder="Enter Your Email"
@@ -153,6 +167,7 @@ export default function Signup() {
               <Form.Group className="mb-3" controlId="su-formPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                  className="p-2"
                   type="password"
                   size="sm"
                   placeholder="Enter Your Password"
@@ -168,6 +183,7 @@ export default function Signup() {
               <Form.Group className="mb-3" controlId="formConfirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
+                  className="p-2"
                   type="password"
                   size="sm"
                   placeholder="Re-Enter Your Password"
@@ -181,7 +197,7 @@ export default function Signup() {
                 </Form.Control.Feedback>
               </Form.Group>
               <div className="form-row">
-                <div className="col-lg-10">
+                <div className="col-lg-12">
                   <Modal show={showModal}>
                     <Modal.Header>
                       <Modal.Title className="text-dark">
@@ -213,7 +229,7 @@ export default function Signup() {
               </div>
 
               <div className="form-row">
-                <div className="col-lg-10">
+                <div className="col-lg-12">
                   <button className="btn btn-outline-warning text-dark w-100 mb-3">
                     <FontAwesomeIcon icon={faFacebook} />
                     Sign Up with Facebook
@@ -221,7 +237,7 @@ export default function Signup() {
                 </div>
               </div>
               <div className="form-row">
-                <div className="col-lg-10">
+                <div className="col-lg-12">
                   <button className="btn btn-outline-warning text-dark w-100 mb-5">
                     <FontAwesomeIcon icon={faGoogle} /> Sign Up with Google
                   </button>

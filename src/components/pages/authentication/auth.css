@@ -7,6 +7,7 @@
 
 #login {
     background-color:  rgb(255, 215, 107);
+    padding-top: 100px;
 }
 
 #login .row {
@@ -22,6 +23,7 @@
 
 #signup {
     background-color:  rgb(255, 215, 107);
+    padding-top: 100px;
 }
 
 #signup .row {
