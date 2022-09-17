@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actionUser from "../../../redux/actions/actionUser";
 import { bindActionCreators } from "redux";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, googleProvider } from "../../../firebase";
+import { auth, db, facebookProvider, googleProvider } from "../../../firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function Login() {
@@ -74,6 +74,11 @@ export default function Login() {
     if (checkIfValid()) {
       loginUser({ email, password });
     }
+  };
+
+  const facebookSignIn = (e) => {
+    e.preventDefault();
+    auth.signInWithPopup(facebookProvider).catch((e) => alert(e.message));
   };
 
   const googleSignIn = (e) => {
@@ -153,7 +158,7 @@ export default function Login() {
                   </div>
                   <div className="form-row">
                     <div className="col-lg-10">
-                      <button className="btn btn-outline-warning text-dark w-100 mb-3">
+                      <button onClick={facebookSignIn} className="btn btn-outline-warning text-dark w-100 mb-3">
                         <FontAwesomeIcon icon={faFacebook} /> Login with
                         Facebook
                       </button>

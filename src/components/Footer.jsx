@@ -1,6 +1,15 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
+// icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faInstagram,
+  faTelegramPlane,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { faPhone, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
   return (
@@ -8,13 +17,16 @@ export default function Footer() {
       <Container>
         <div className="row text-white g-4">
           <div className="col-md-6 col-lg-4 px-5">
-            <Link to="/" className="brand text-decoration-none text-white">
+            <a
+              href="index.html"
+              className="brand text-decoration-none text-white"
+            >
               Ultra Foundation
-            </Link>
+            </a>
             <p className="text-white mt-3 text-muted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut ea
-              error consectetur illum? Sint voluptatibus quae, sed et
-              consectetur earum?
+              A non-profit organization that brings people together in hopes of
+              bringing joy, hope, opportunities, and generosity to others who
+              need it the most.
             </p>
           </div>
 
@@ -23,7 +35,7 @@ export default function Footer() {
 
             <div className="d-flex justify-content-start align-items-start my-2 text-muted">
               <span className="me-3">
-                <i className="bi bi-pin-map-fill"></i>
+                <FontAwesomeIcon icon={faMapMarkedAlt} />
               </span>
               <span className="fw-light">
                 Ultra Street, Angeles City, Pampanga, Philippines
@@ -32,7 +44,7 @@ export default function Footer() {
 
             <div className="d-flex justify-content-start align-items-start my-2 text-muted">
               <span className="me-3">
-                <i className="bi bi-phone"></i>
+                <FontAwesomeIcon icon={faPhone} />
               </span>
               <span className="fw-light">09999321456</span>
             </div>
@@ -42,22 +54,22 @@ export default function Footer() {
             <h5 className="fw-light mb-3">Follow Us</h5>
             <ul className="list-unstyled d-flex">
               <li className="text-decoration-none text-muted fs-4 me-4">
-                <i className="bis bi-facebook"></i>
+                <FontAwesomeIcon icon={faFacebook} />
               </li>
               <li className="text-decoration-none text-muted fs-4 me-4">
-                <i className="bis bi-twitter"></i>
+                <FontAwesomeIcon icon={faTwitter} />
               </li>
               <li className="text-decoration-none text-muted fs-4 me-4">
-                <i className="bis bi-instagram"></i>
+                <FontAwesomeIcon icon={faInstagram} />
               </li>
               <li className="text-decoration-none text-muted fs-4 me-4">
-                <i className="bis bi-telegram"></i>
+                <FontAwesomeIcon icon={faTelegramPlane} />
               </li>
             </ul>
           </div>
-          <Link to="#" className="position-absolute start-0 end-0 p-5">
+          <a href="#" className="position-absolute start-0 end-0 p-5">
             <i className="bi bi-arrow-up-circle text-warning h1"></i>
-          </Link>
+          </a>
         </div>
       </Container>
     </footer>
