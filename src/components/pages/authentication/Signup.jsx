@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
-import { bindActionCreators } from "redux";
+import { auth } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
-import * as actionRegister from "../../../redux/actions/actionRegister";
-import { db } from "../../../firebase";
-import firebase from "firebase/compat/app";
-// import { db } from "../../../firebase";
+import * as actionUser from "../../../redux/actions/actionUser";
+import { bindActionCreators } from "redux";
 
 export default function Signup() {
   const [firstname, setFirstName] = useState("");
@@ -16,47 +15,27 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Redux
-  const { registerUser } = bindActionCreators(actionRegister, useDispatch());
-  const userLists = useSelector((state) => state.userLists);
+  const [showModal, setShowModal] = useState(false);
 
   // Validation
-  // const [invalidFirstName, setInvalidFirstName] = useState(false);
-  // const [invalidLastName, setInvalidLastName] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+
+  const navigate = useNavigate();
+  const { registerUser } = bindActionCreators(actionUser, useDispatch());
+  const [user] = useAuthState(auth);
+  const activeUser = useSelector((state) => state.activeUser);
+
+  useEffect(() => {
+    if (user || activeUser.email) {
+      navigate("/");
+    }
+  });
 
   const checkIfValid = () => {
     let isValid = true;
-    userLists.forEach((item) => {
-      // // // Check if firstname is valid
-      // if (item.firstname === firstname) {
-      //   isValid = false;
-      //   setInvalidFirstName(true);
-      // } else {
-      //   setInvalidFirstName(false);
-      // }
-      // //  // Check if lastname is valid
-      // if (item.lastname === lastname) {
-      //   isValid = false;
-      //   setInvalidLastName(true);
-      // } else {
-      //   setInvalidLastName(false);
-      // }
-
-      // Check if email is valid
-      if (item.email === email) {
-        isValid = false;
-        setInvalidEmail(true);
-      } else {
-        setInvalidEmail(false);
-      }
-    });
-
     // Check if password is same with confirmPassword
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword || !password) {
       setInvalidPassword(true);
       isValid = false;
     } else {
@@ -68,17 +47,22 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (checkIfValid()) {
-      registerUser({ firstname, lastname, email, password });
-      db.collection("users").add({
+      registerUser({
         firstname: firstname,
+        lastname: lastname,
         email: email,
         password: password,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-
-      setShowModal(true);
+      })
+        .then((response) => {
+          console.log(response, "response");
+          setInvalidEmail(false);
+          setShowModal(true);
+        })
+        .catch((error) => {
+          setInvalidEmail(true);
+          console.log(error, "error");
+        });
     }
   };
 
@@ -125,7 +109,7 @@ export default function Signup() {
                     value={firstname}
                     onChange={(e) => setFirstName(e.target.value)}
                     autoComplete="firstname"
-                  // isInvalid={invalidFirstName}
+                    // isInvalid={invalidFirstName}
                   ></Form.Control>
                   {/* <Form.Control.Feedback type="invalid">
                     First Name already exist.
@@ -141,7 +125,7 @@ export default function Signup() {
                     value={lastname}
                     onChange={(e) => setLastName(e.target.value)}
                     autoComplete="name"
-                  // isInvalid={invalidLastName}
+                    // isInvalid={invalidLastName}
                   ></Form.Control>
                   {/* <Form.Control.Feedback type="invalid">
                     Last Name already exist.

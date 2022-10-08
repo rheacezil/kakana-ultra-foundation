@@ -1,10 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import registerReducer from "./reducers/registerReducer";
-import userReducer from "./reducers/userReducer";
+import thunk from 'redux-thunk';
+import promise from 'redux-promise';
+import promiseMiddleware from 'redux-promise-middleware';
+import logger from 'redux-logger';
+
+// Reducers
+import userReducer from "./../redux/reducers/userReducer";
 
 export const store = configureStore({
-  reducer: {
-    userLists: registerReducer,
-    activeUser: userReducer,
-  },
-});
+    reducer: {
+        activeUser: userReducer,
+    },
+    middleware: [
+        thunk,
+        promiseMiddleware,
+        promise,
+        logger,
+    ]
+})

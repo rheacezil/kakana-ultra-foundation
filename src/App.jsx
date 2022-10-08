@@ -7,7 +7,7 @@ import AboutUs from "./components/pages/AboutUs";
 import Login from "./components/pages/authentication/Login";
 import Signup from "./components/pages/authentication/Signup";
 import Donate from "./components/pages/Donate";
-import Homepage from "./components/pages/Homepage";
+import Homepage from "./components/pages/HomePage";
 import LandingPage from "./components/pages/LandingPage";
 
 import Show from "./components/DataTable";

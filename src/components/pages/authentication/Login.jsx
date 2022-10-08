@@ -8,23 +8,23 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actionUser from "../../../redux/actions/actionUser";
 import { bindActionCreators } from "redux";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, facebookProvider, googleProvider } from "../../../firebase";
+import { auth, facebookProvider, googleProvider } from "../../../firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [user] = useAuthState(auth);
-  const userLists = useSelector((state) => state.userLists);
-  const [userList] = useCollection(db.collection("users"));
-  const { loginUser } = bindActionCreators(actionUser, useDispatch());
-  const navigate = useNavigate();
-  const activeUser = useSelector((state) => state.activeUser);
-
   // Validation
   const [invalidUser, setInvalidUser] = useState(false);
 
+  const navigate = useNavigate();
+  const { loginUser, loginUserViaProvider } = bindActionCreators(
+    actionUser,
+    useDispatch()
+  );
+  const [user] = useAuthState(auth);
+  const activeUser = useSelector((state) => state.activeUser);
   useEffect(() => {
     if (user || activeUser.email) {
       // navigate home page
@@ -32,58 +32,33 @@ export default function Login() {
     }
   });
 
-  const checkIfValid = () => {
-    let isValid = false;
-
-    // Check if there's no user created
-    if (userList.docs.length === 0) {
-      setInvalidUser(true);
-      return false;
-    }
-
-    // Check if user exist
-    userList.docs.forEach((user) => {
-      if (user.data().email === email && user.data().password === password) {
-        setInvalidUser(false);
-        isValid = true;
-      } else {
-        setInvalidUser(true);
-      }
-    });
-    //return statement
-    return isValid;
-  };
-
-  //   // Check if user exist
-  //   userLists.forEach((user) => {
-  //     if (user.email === email && user.password === password) {
-  //       setInvalidUser(false);
-  //       isValid = true;
-  //       console.log("Successful Login");
-  //     } else {
-  //       console.log("Failed Login");
-  //       setInvalidUser(true);
-  //     }
-  //   });
-
-  //   return isValid;
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (checkIfValid()) {
-      loginUser({ email, password });
-    }
+
+    loginUser({ email: email, password: password }).catch((error) => {
+      console.log(error);
+      setInvalidUser(true);
+    });
   };
 
   const facebookSignIn = (e) => {
     e.preventDefault();
-    auth.signInWithPopup(facebookProvider).catch((e) => alert(e.message));
+    auth
+      .signInWithPopup(facebookProvider)
+      .then((response) => {
+        loginUserViaProvider(response?.additionalUserInfo.profile.email);
+      })
+      .catch((e) => alert(e.message));
   };
 
   const googleSignIn = (e) => {
     e.preventDefault();
-    auth.signInWithPopup(googleProvider).catch((error) => alert(error.message));
+    auth
+      .signInWithPopup(googleProvider)
+      .then((response) => {
+        loginUserViaProvider(response?.additionalUserInfo.profile.email);
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -158,7 +133,10 @@ export default function Login() {
                   </div>
                   <div className="form-row">
                     <div className="col-lg-10">
-                      <button onClick={facebookSignIn} className="btn btn-outline-warning text-dark w-100 mb-3">
+                      <button
+                        onClick={facebookSignIn}
+                        className="btn btn-outline-warning text-dark w-100 mb-3"
+                      >
                         <FontAwesomeIcon icon={faFacebook} /> Login with
                         Facebook
                       </button>
