@@ -10,10 +10,10 @@ import {
 import { db } from "../firebase";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { async } from "@firebase/util";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "./Footer";
+import NavHome from "./NavHome";
 const MySwal = withReactContent(Swal);
 
 const Show = () => {
@@ -57,7 +57,8 @@ const Show = () => {
 
   return (
     <>
-      <section className="donate-bg vh-100">
+      <NavHome />
+      <section className=" vh-100">
         <div className="container donate">
           <div className="row">
             <div className="col">

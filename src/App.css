@@ -85,10 +85,10 @@
     background: url(../public/images/background-1.png) top/cover;
 }
 
-.card:hover {
+/* .card:hover {
     transform: scale(1.1);
     transition: all 0.4s ease;
-}
+} */
 
 /* Donate Page */
 .donate-bg{
@@ -109,4 +109,11 @@
 }
 .donate-form{
     margin-top: 104px;
+}
+
+.admin-img{
+    margin: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
 }

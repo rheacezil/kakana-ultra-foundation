@@ -9,12 +9,11 @@ import Signup from "./components/pages/authentication/Signup";
 import Donate from "./components/pages/Donate";
 import Homepage from "./components/pages/HomePage";
 import LandingPage from "./components/pages/LandingPage";
-
-import Show from "./components/DataTable";
 import Create from "./components/pages/Donate";
 import Edit from "./components/EditData";
 // import Show from "./components/pages/Show";
 import { auth } from "./firebase";
+import Admin from "./components/pages/Admin";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -43,7 +42,7 @@ function App() {
           <Route path="/donate" element={<Donate />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/show" element={<Show />} />
+          <Route path="/show" element={<Admin />} />
           <Route path="/create" element={<Create />} />
           <Route path="/edit/:id" element={<Edit />} />
         </Routes>

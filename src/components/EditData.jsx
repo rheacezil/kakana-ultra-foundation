@@ -4,9 +4,10 @@ import { getDoc, updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Button, Form } from "react-bootstrap";
 import Footer from "./Footer";
+import Select from "react-select";
 
 const Edit = () => {
-  const [input, setInput] = useState(null);
+  const [amount, setAmount] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,11 +17,20 @@ const Edit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const options = [
+    { value: 100, label: "₱100.00" },
+    { value: 250, label: "₱250.00" },
+    { value: 500, label: "₱500.00" },
+    { value: 1000, label: "₱1000.00" },
+    { value: 2000, label: "₱2000.00" },
+    { value: 3000, label: "₱3000.00" },
+  ];
+
   const updateSubmit = async (e) => {
     e.preventDefault();
     const user = doc(db, "users", id);
     const data = {
-      input: input,
+      amount: amount,
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -34,10 +44,10 @@ const Edit = () => {
   const getProductById = async (id) => {
     const user = await getDoc(doc(db, "users", id));
     if (user.exists()) {
-      setInput(user.data().input);
+      setAmount(user.data().amount);
       setFirstName(user.data().firstName);
       setLastName(user.data().lastName);
-      setEmail(user.data().input);
+      setEmail(user.data().email);
       setAddress(user.data().address);
       setPhoneNumber(user.data().phoneNumber);
     }
@@ -75,13 +85,12 @@ const Edit = () => {
                 <h3 className="py-3">Billing information</h3>
                 <Form.Group className="mb-3" controlId="formFirstName">
                   <Form.Label>Enter the amount:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    size="sm"
-                    placeholder="$0.00"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                  ></Form.Control>
+                  <Select
+                    className="py-2"
+                    defaultValue={amount}
+                    onChange={setAmount}
+                    options={options}
+                  />
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
                     type="text"
