@@ -9,6 +9,7 @@ import * as actionUser from "../../../redux/actions/actionUser";
 import { bindActionCreators } from "redux";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, facebookProvider, googleProvider } from "../../../firebase";
+import { db } from "../../../firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function Login() {
@@ -32,34 +33,64 @@ export default function Login() {
     }
   });
 
+  const [userList] = useCollection(db.collection("users"));
+
+  const checkIfValid = () => {
+    let isValid = false;
+
+    // Check if there are still no users created
+    if (userList.docs.length === 0) {
+      setInvalidUser(true);
+      return false;
+    }
+
+    // Check if user exists (email & pw)
+    userList.docs.forEach((user) => {
+      if (user.data().email === email && user.data().password === password) {
+        setInvalidUser(false);
+        isValid = true;
+      } else {
+        setInvalidUser(true);
+      }
+    });
+
+    // return statement
+    return isValid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    loginUser({ email: email, password: password }).catch((error) => {
-      console.log(error);
-      setInvalidUser(true);
-    });
+    // loginUser({ email: email, password: password }).catch((error) => {
+    //   console.log(error);
+    //   setInvalidUser(true);
+    // });
+    if (checkIfValid()) {
+      console.log("valid");
+      loginUser({ email });
+    } else {
+      console.log("invalid");
+    }
   };
 
-  const facebookSignIn = (e) => {
-    e.preventDefault();
-    auth
-      .signInWithPopup(facebookProvider)
-      .then((response) => {
-        loginUserViaProvider(response?.additionalUserInfo.profile.email);
-      })
-      .catch((e) => alert(e.message));
-  };
+  // const facebookSignIn = (e) => {
+  //   e.preventDefault();
+  //   auth
+  //     .signInWithPopup(facebookProvider)
+  //     .then((response) => {
+  //       loginUserViaProvider(response?.additionalUserInfo.profile.email);
+  //     })
+  //     .catch((e) => alert(e.message));
+  // };
 
-  const googleSignIn = (e) => {
-    e.preventDefault();
-    auth
-      .signInWithPopup(googleProvider)
-      .then((response) => {
-        loginUserViaProvider(response?.additionalUserInfo.profile.email);
-      })
-      .catch((error) => alert(error.message));
-  };
+  // const googleSignIn = (e) => {
+  //   e.preventDefault();
+  //   auth
+  //     .signInWithPopup(googleProvider)
+  //     .then((response) => {
+  //       loginUserViaProvider(response?.additionalUserInfo.profile.email);
+  //     })
+  //     .catch((error) => alert(error.message));
+  // };
 
   return (
     <>
@@ -131,7 +162,7 @@ export default function Login() {
                       <hr />
                     </div>
                   </div>
-                  <div className="form-row">
+                  {/* <div className="form-row">
                     <div className="col-lg-10">
                       <button
                         onClick={facebookSignIn}
@@ -151,7 +182,7 @@ export default function Login() {
                         <FontAwesomeIcon icon={faGoogle} /> Login with Google
                       </button>
                     </div>
-                  </div>
+                  </div> */}
 
                   <Link to="/" className="text-muted">
                     Forgot password?

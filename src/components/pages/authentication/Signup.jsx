@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import firebase from "firebase/compat/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +9,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import * as actionUser from "../../../redux/actions/actionUser";
 import { bindActionCreators } from "redux";
+import { db } from "../../../firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function Signup() {
   const [firstname, setFirstName] = useState("");
@@ -18,6 +21,8 @@ export default function Signup() {
   const [showModal, setShowModal] = useState(false);
 
   // Validation
+  const [invalidFirstName, setInvalidFirstName] = useState(false);
+  const [invalidLastName, setInvalidLastName] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
@@ -25,6 +30,8 @@ export default function Signup() {
   const { registerUser } = bindActionCreators(actionUser, useDispatch());
   const [user] = useAuthState(auth);
   const activeUser = useSelector((state) => state.activeUser);
+
+  const [userList] = useCollection(db.collection("users"));
 
   useEffect(() => {
     if (user || activeUser.email) {
@@ -34,6 +41,16 @@ export default function Signup() {
 
   const checkIfValid = () => {
     let isValid = true;
+    userList?.docs.forEach((doc) => {
+      // Check if email is valid
+      if (doc.data().email === email || !email) {
+        isValid = false;
+        setInvalidEmail(true);
+      } else {
+        setInvalidEmail(false);
+      }
+    });
+
     // Check if password is same with confirmPassword
     if (password !== confirmPassword || !password) {
       setInvalidPassword(true);
@@ -47,22 +64,32 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // if (checkIfValid()) {
+    //   registerUser({
+    //     firstname: firstname,
+    //     lastname: lastname,
+    //     email: email,
+    //     password: password,
+    //   })
+    //     .then((response) => {
+    //       console.log(response, "response");
+    //       setInvalidEmail(false);
+    //       setShowModal(true);
+    //     })
+    //     .catch((error) => {
+    //       setInvalidEmail(true);
+    //       console.log(error, "error");
+    //     });
+    // }
     if (checkIfValid()) {
-      registerUser({
+      db.collection("users").add({
         firstname: firstname,
         lastname: lastname,
         email: email,
         password: password,
-      })
-        .then((response) => {
-          console.log(response, "response");
-          setInvalidEmail(false);
-          setShowModal(true);
-        })
-        .catch((error) => {
-          setInvalidEmail(true);
-          console.log(error, "error");
-        });
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      setShowModal(true);
     }
   };
 
@@ -109,11 +136,11 @@ export default function Signup() {
                     value={firstname}
                     onChange={(e) => setFirstName(e.target.value)}
                     autoComplete="firstname"
-                    // isInvalid={invalidFirstName}
+                    isInvalid={invalidFirstName}
                   ></Form.Control>
-                  {/* <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback type="invalid">
                     First Name already exist.
-                  </Form.Control.Feedback> */}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formLastName">
                   <Form.Label>Last Name</Form.Label>
@@ -125,13 +152,14 @@ export default function Signup() {
                     value={lastname}
                     onChange={(e) => setLastName(e.target.value)}
                     autoComplete="name"
-                    // isInvalid={invalidLastName}
+                    isInvalid={invalidLastName}
                   ></Form.Control>
-                  {/* <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback type="invalid">
                     Last Name already exist.
-                  </Form.Control.Feedback> */}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </div>
+
               <Form.Group className="mb-3" controlId="su-formEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -148,6 +176,7 @@ export default function Signup() {
                   email already exist.
                 </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group className="mb-3" controlId="su-formPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -164,6 +193,7 @@ export default function Signup() {
                   The password confirmation does not match
                 </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group className="mb-3" controlId="formConfirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
@@ -180,12 +210,13 @@ export default function Signup() {
                   The password confirmation does not match
                 </Form.Control.Feedback>
               </Form.Group>
+
               <div className="form-row">
                 <div className="col-lg-12">
                   <Modal show={showModal}>
                     <Modal.Header>
                       <Modal.Title className="text-dark">
-                        Congratulation!
+                        Congratulations!
                       </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="text-dark">
@@ -212,7 +243,7 @@ export default function Signup() {
                 </div>
               </div>
 
-              <div className="form-row">
+              {/* <div className="form-row">
                 <div className="col-lg-12">
                   <button className="btn btn-outline-warning text-dark w-100 mb-3">
                     <FontAwesomeIcon icon={faFacebook} />
@@ -226,7 +257,7 @@ export default function Signup() {
                     <FontAwesomeIcon icon={faGoogle} /> Sign Up with Google
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               <p>
                 Been here before?{" "}
